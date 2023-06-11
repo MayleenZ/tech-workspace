@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Movie API</title>
+</head>
+<body>
+    <h1>Test API</h1>
+    <p id="movie-title"></p>
+    <p id="movie-rating"></p>
+    <img src = ""  id = "movie-img">
+
+
+    <form onsubmit = "submitForm(event)">
+        <input type = "text" id = "query-input"> <input type = "submit">
+    </form>
+
+<!-- onsubmit is triggered whenever the form is about to be submitted.
+    onclick is triggered when the specific button is clicked. -->
+
+
+    <script>
+        function submitForm(e){
+            e.preventDefault()
+            const query = document.getElementById('query-input').value;
+            
+            fetch(`https://www.omdbapi.com/?apikey=20d49ef4&t=${query}`)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                console.log(data)
+                const movieTitle = data.Title
+                const idElement = document.getElementById("movie-title")
+                idElement.textContent = movieTitle
+                //the textContent property of idElement is updated to contain the value of 'movieTitle'
+
+                //the property can be modified/updated
+                const movieRating = data.Ratings[0].Value
+                const idRating = document.getElementById("movie-rating")
+                idRating.textContent = movieRating
+
+                const movieImg = data.Poster
+                console.log(movieImg);
+                const idMovieImg = document.getElementById("movie-img")
+                idMovieImg.src = movieImg
+            })
+            .catch(error => console.error())
+        }
+
+    </script>
+</body>
+</html>
